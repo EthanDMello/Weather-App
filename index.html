@@ -18,12 +18,46 @@
     <title>Weather App</title>
   </head>
   <body>
-    <header class="">
-      <h1 class="is-size-1">Weather ☁</h1>
-      <section class="searchBar"></section>
+    <header class="section">
+      <!-- header with title and searchbar -->
+      <section class="level">
+        <h1 class="title is-1">Weather ☁</h1>
+        <div class="control level-right">
+          <input
+            class="input"
+            type="text"
+            placeholder="Search for   Location..."
+          />
+          <button class="button">🔍</button>
+        </div>
+      </section>
     </header>
-    <main></main>
-    <footer></footer>
+    <main class="tile is-ancestor section">
+      <!-- main -->
+      <section class="tile is-9 is-vertical">
+        <div class="tile is-child box">
+          <!-- current searched location -->
+        </div>
+        <div class="tile is-child box">
+          <!-- 5 day forcast -->
+        </div>
+      </section>
+      <aside class="tile is-parent">
+        <div class="tile is-child panel">
+          <!-- recent searched locations -->
+          <p class="panel-heading">Recent Locations</p>
+          <a class="panel-block">
+            <span class="panel-icon">
+              <i class="fas fa-book" aria-hidden="true"></i>
+            </span>
+            recent location
+          </a>
+        </div>
+      </aside>
+    </main>
+    <footer class="footer">
+      <h1>Made by Ethan D'Mello</h1>
+    </footer>
     <script src="./Assets/JS/script.js"></script>
   </body>
 </html>
