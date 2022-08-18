@@ -43,17 +43,19 @@
 
 function appendWeatherCurrentData(temp, wind, pressure, humidity) {
   console.log("appendWeatherData go!");
-  document.getElementById("currentTemp").textContent = temp;
-  document.getElementById("currentWind").textContent = wind;
-  document.getElementById("currentPressure").textContent = pressure;
-  document.getElementById("currentHumidity").textContent = humidity;
+  document.getElementById("currentTemp").textContent = temp + "°C";
+  document.getElementById("currentWind").textContent = wind + "m/s";
+  document.getElementById("currentPressure").textContent = pressure + "hPa";
+  document.getElementById("currentHumidity").textContent = humidity + "%";
 }
 function appendWeatherForecastData(temp, weather, wind, time, id) {
-  console.log("appendForecastData go!");
-  document.getElementById("temp1").textContent = temp;
-  // document.getElementById("currentWind").textContent = wind;
-  document.getElementById("weather1").textContent = weather;
-  document.getElementById("date1").textContent = time;
+  if (id === 1) time = "Today";
+  if (id === 2) time = "Tomorrow  ";
+  console.log("appendForecastData go!", id);
+  document.getElementById("temp" + id).textContent = temp + "°C";
+  document.getElementById("wind" + id).textContent = wind + "m/s";
+  document.getElementById("weather" + id).textContent = weather;
+  document.getElementById("date" + id).textContent = time;
 }
 
 function searchCurrentWeatherTest() {
@@ -78,6 +80,7 @@ function forecastWeatherTest() {
     })
     .then((data) => {
       console.log("sesh");
+      let idCount = 1;
       for (let i = 0; i < 40; i += 8) {
         const temp = data.list[i].main.temp;
         const weather = data.list[i].weather[0].main;
@@ -90,7 +93,8 @@ function forecastWeatherTest() {
           wind + "m/s",
           time
         );
-        appendWeatherForecastData(temp, weather, wind, time);
+        appendWeatherForecastData(temp, weather, wind, time, idCount);
+        idCount++;
       }
     });
 }
