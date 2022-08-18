@@ -35,7 +35,7 @@
     <main class="tile is-ancestor section has-background-link">
       <!-- main -->
       <section class="tile is-9 is-vertical">
-        <div class="tile is-child box">
+        <div class="tile is-child box has-background-info-light">
           <!-- current searched location -->
           <h1 class="title is-3">
             <span>
@@ -54,20 +54,40 @@
             <p>Humidity: <span id="currentHumidity"></span></p>
           </section>
         </div>
-        <div class="tile is-child box">
+        <div class="tile is-child box has-background-info-light">
           <!-- 5 day forecast -->
           <h1 class="title is-5">5 day Forecast:</h1>
           <section class="tile is-parent">
-            <div class="tile is-child block">1</div>
-            <div class="tile is-child block">2</div>
-            <div class="tile is-child block">3</div>
-            <div class="tile is-child block">4</div>
-            <div class="tile is-child block">5</div>
+            <div id="forecast1" class="tile is-child block">
+              <p><span id="date1"></span></p>
+              <p><span id="weather1"></span></p>
+              <p><span id="temp1"></span></p>
+            </div>
+            <div id="forecast2" class="tile is-child block">
+              <p><span id="date2"></span></p>
+              <p><span id="weather2"></span></p>
+              <p><span id="temp2"></span></p>
+            </div>
+            <div id="forecast3" class="tile is-child block">
+              <p><span id="date3"></span></p>
+              <p><span id="weather3"></span></p>
+              <p><span id="temp3"></span></p>
+            </div>
+            <div id="forecast4" class="tile is-child block">
+              <p><span id="date4"></span></p>
+              <p><span id="weather"></span></p>
+              <p><span id="temp"></span></p>
+            </div>
+            <div id="forecast5" class="tile is-child block">
+              <p><span id="date"></span></p>
+              <p><span id="weather"></span></p>
+              <p><span id="temp"></span></p>
+            </div>
           </section>
         </div>
       </section>
       <aside class="tile is-parent">
-        <div class="tile is-child panel box">
+        <div class="tile is-child panel box has-background-info-light">
           <!-- recent searched locations -->
           <p class="panel-heading">Recent Locations</p>
           <a class="panel-block">Recent location </a>

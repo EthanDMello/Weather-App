@@ -48,8 +48,15 @@ function appendWeatherCurrentData(temp, wind, pressure, humidity) {
   document.getElementById("currentPressure").textContent = pressure;
   document.getElementById("currentHumidity").textContent = humidity;
 }
+function appendWeatherForecastData(temp, weather, wind, time, id) {
+  console.log("appendForecastData go!");
+  document.getElementById("temp1").textContent = temp;
+  // document.getElementById("currentWind").textContent = wind;
+  document.getElementById("weather1").textContent = weather;
+  document.getElementById("date1").textContent = time;
+}
 
-function searchLocationTest() {
+function searchCurrentWeatherTest() {
   fetch("Assets/JS/data.JSON")
     .then((response) => {
       return response.json();
@@ -64,4 +71,29 @@ function searchLocationTest() {
     });
 }
 
-searchLocationTest();
+function forecastWeatherTest() {
+  fetch("Assets/JS/dataForecast.JSON")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("sesh");
+      for (let i = 0; i < 40; i += 8) {
+        const temp = data.list[i].main.temp;
+        const weather = data.list[i].weather[0].main;
+        const wind = data.list[i].wind.speed;
+        const time = data.list[i].dt_txt;
+        console.log(
+          "weather forecast",
+          temp + "°C",
+          weather,
+          wind + "m/s",
+          time
+        );
+        appendWeatherForecastData(temp, weather, wind, time);
+      }
+    });
+}
+
+searchCurrentWeatherTest();
+forecastWeatherTest();
