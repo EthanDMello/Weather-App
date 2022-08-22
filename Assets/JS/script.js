@@ -99,8 +99,19 @@ function forecastWeatherTest() {
     });
 }
 
+if (localStorage.getItem("recentSearches") === null) {
+  searchAr = [];
+  localStorage.setItem("recentSearches", JSON.stringify(searchAr));
+} else searchAr = JSON.parse(localStorage.getItem("recentSearches"));
+
 $(".searchButton").click(function () {
-  console.log($(this));
+  userSearch = $("#searchInput").val();
+  JSON.parse(localStorage.getItem("recentSearches"));
+  searchAr.push(userSearch);
+  console.log(userSearch);
+
+  $("#searchInput").val("");
 });
+
 searchCurrentWeatherTest();
 forecastWeatherTest();
