@@ -99,5 +99,8 @@ function forecastWeatherTest() {
     });
 }
 
+$(".searchButton").click(function () {
+  console.log($(this));
+});
 searchCurrentWeatherTest();
 forecastWeatherTest();
