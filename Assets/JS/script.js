@@ -81,6 +81,7 @@ function searchCurrentWeatherTest(location) {
     })
     .then((data) => {
       $("#currentCity").text(data.name);
+      localStorage.setItem(location, JSON.stringify(data));
       const temp = data.main.temp;
       const wind = data.wind.speed;
       const pressure = data.main.pressure;
@@ -88,6 +89,17 @@ function searchCurrentWeatherTest(location) {
       appendWeatherCurrentData(temp, wind, pressure, humidity);
       forecastWeatherTest(location);
     });
+}
+
+function appendRecentSearch(data) {
+  $("#currentCity").text(data.name);
+  localStorage.setItem(location, JSON.stringify(data));
+  const temp = data.main.temp;
+  const wind = data.wind.speed;
+  const pressure = data.main.pressure;
+  const humidity = data.main.humidity;
+  appendWeatherCurrentData(temp, wind, pressure, humidity);
+  forecastWeatherTest(location);
 }
 
 function forecastWeatherTest(location) {
@@ -127,25 +139,24 @@ if (localStorage.getItem("recentSearches") === null) {
 } else {
   searchAr = JSON.parse(localStorage.getItem("recentSearches"));
   Array.prototype.reverse.call(recentSearchArArea);
-  searchAr.forEach((search, i) => {
-    recentSearchArArea[i].textContent = search;
-    $(recentSearchArArea[i]).attr(
-      "onclick",
-      "searchCurrentWeatherTest(" + search + ")"
-    );
-    $(recentSearchArArea[i]).attr("href", " :void(0);");
-  });
 }
 
 $(".searchButton").click(function () {
   userSearch = $("#searchInput").val();
   searchAr = JSON.parse(localStorage.getItem("recentSearches"));
   searchAr.push(userSearch);
-  if (searchAr.length > 9) searchAr.shift();
+  if (searchAr.length > 8) searchAr.shift();
   localStorage.setItem("recentSearches", JSON.stringify(searchAr));
   appendRecentSearches(searchAr);
   searchCurrentWeatherTest(userSearch);
   $("#searchInput").val("");
+});
+
+$(".panel-block").click(function () {
+  let location = $(this.target).val();
+  dataAr = JSON.parse(localStorage.getItem(location));
+  // appendRecentSearch(dataAr);
+  console.log("clicked", location, dataAr);
 });
 
 // searchCurrentWeatherTest();
