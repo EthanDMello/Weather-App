@@ -66,12 +66,21 @@ function appendWeatherForecastData(temp, weather, wind, time, id) {
   }
 }
 
-function searchCurrentWeatherTest() {
-  fetch("Assets/JS/data.JSON")
+function searchCurrentWeatherTest(location) {
+  // api.openweathermap.org/geo/1.0/direct?q=" + location + ",uk&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1
+  // "api.openweathermap.org/data/2.5/weather?q=" +
+  //     location +
+  //     "&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
+  http: fetch(
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+      location +
+      "&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
+  )
     .then((response) => {
       return response.json();
     })
     .then((data) => {
+      $("#currentCity").text(data.name);
       const temp = data.main.temp;
       const wind = data.wind.speed;
       const pressure = data.main.pressure;
@@ -80,7 +89,7 @@ function searchCurrentWeatherTest() {
     });
 }
 
-function forecastWeatherTest() {
+function forecastWeatherTest(location) {
   // https://api.openweathermap.org/data/2.5/forecast?q=Birmingham,uk&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1
   fetch("Assets/JS/dataForecast.JSON")
     .then((response) => {
@@ -99,20 +108,34 @@ function forecastWeatherTest() {
     });
 }
 
+recentSearchArArea = $("#recentLocation").children();
+const appendRecentSearches = (array) => {
+  array.forEach((search, i) => {
+    recentSearchArArea[i].textContent = search;
+  });
+};
+
 if (localStorage.getItem("recentSearches") === null) {
   searchAr = [];
   localStorage.setItem("recentSearches", JSON.stringify(searchAr));
-} else searchAr = JSON.parse(localStorage.getItem("recentSearches"));
+} else {
+  searchAr = JSON.parse(localStorage.getItem("recentSearches"));
+  Array.prototype.reverse.call(recentSearchArArea);
+  searchAr.forEach((search, i) => {
+    recentSearchArArea[i].textContent = search;
+  });
+}
 
 $(".searchButton").click(function () {
   userSearch = $("#searchInput").val();
-  JSON.parse(localStorage.getItem("recentSearches"));
+  searchAr = JSON.parse(localStorage.getItem("recentSearches"));
   searchAr.push(userSearch);
+  if (searchAr.length > 9) searchAr.shift();
   localStorage.setItem("recentSearches", JSON.stringify(searchAr));
-  console.log(userSearch);
-
+  appendRecentSearches(searchAr);
+  searchCurrentWeatherTest(userSearch);
   $("#searchInput").val("");
 });
 
-searchCurrentWeatherTest();
+// searchCurrentWeatherTest();
 forecastWeatherTest();
