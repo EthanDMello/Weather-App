@@ -108,6 +108,7 @@ $(".searchButton").click(function () {
   userSearch = $("#searchInput").val();
   JSON.parse(localStorage.getItem("recentSearches"));
   searchAr.push(userSearch);
+  localStorage.setItem("recentSearches", JSON.stringify(searchAr));
   console.log(userSearch);
 
   $("#searchInput").val("");
