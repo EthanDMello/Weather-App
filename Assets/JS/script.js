@@ -86,12 +86,18 @@ function searchCurrentWeatherTest(location) {
       const pressure = data.main.pressure;
       const humidity = data.main.humidity;
       appendWeatherCurrentData(temp, wind, pressure, humidity);
+      forecastWeatherTest(location);
     });
 }
 
 function forecastWeatherTest(location) {
   // https://api.openweathermap.org/data/2.5/forecast?q=Birmingham,uk&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1
-  fetch("Assets/JS/dataForecast.JSON")
+  // "Assets/JS/dataForecast.JSON"
+  fetch(
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+      location +
+      "&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
+  )
     .then((response) => {
       return response.json();
     })
@@ -123,6 +129,11 @@ if (localStorage.getItem("recentSearches") === null) {
   Array.prototype.reverse.call(recentSearchArArea);
   searchAr.forEach((search, i) => {
     recentSearchArArea[i].textContent = search;
+    $(recentSearchArArea[i]).attr(
+      "onclick",
+      "searchCurrentWeatherTest(" + search + ")"
+    );
+    $(recentSearchArArea[i]).attr("href", " :void(0);");
   });
 }
 
@@ -138,4 +149,4 @@ $(".searchButton").click(function () {
 });
 
 // searchCurrentWeatherTest();
-forecastWeatherTest();
+// forecastWeatherTest();
