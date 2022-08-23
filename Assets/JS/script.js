@@ -44,7 +44,7 @@ function getLonLat(location) {
   fetch(
     "https://api.openweathermap.org/data/2.5/weather?q=" +
       location +
-      ",uk&APPID=b0b1a57dd6c32f78f9ea0a44ec5499f1"
+      "&APPID=b0b1a57dd6c32f78f9ea0a44ec5499f1"
   )
     .then((response) => {
       return response.json();
@@ -78,10 +78,23 @@ function searchOneCallWeather(lon, lat, name) {
 
 function appendAllWeatherData(data, name) {
   $("#currentCity").text(name);
+  $("#currentIcon").attr(
+    "src",
+    "http://openweathermap.org/img/wn/" +
+      data.current.weather[0].icon +
+      "@2x.png"
+  );
   document.getElementById("currentTemp").textContent = data.current.temp + "°C";
   document.getElementById("currentWind").textContent =
     data.current.wind_speed + "m/s";
   document.getElementById("currentUv").textContent = data.current.uvi + "index";
+  if (data.current.uvi <= 2) {
+    $("#currentUv").attr("class", "has-text-white has-background-success");
+  } else if (data.current.uvi > 2 && data.current.uvi < 6) {
+    $("#currentUv").attr("class", "has-text-white has-background-warning");
+  } else {
+    $("#currentUv").attr("class", "has-text-white has-background-danger");
+  }
   document.getElementById("currentHumidity").textContent =
     data.current.humidity + "%";
   for (let i = 0; i < 5; i++) {
