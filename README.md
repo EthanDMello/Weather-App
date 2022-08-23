@@ -7,7 +7,7 @@ Github: https://github.com/EthanDMello
 LinkedIn: https://www.linkedin.com/in/ethan-d-mello-0351ab21b/
 
 Link to deployed application:
-https://ethandmello.github.io/weather-app/
+https://ethandmello.github.io/Weather-App/
 
 Application screenshot:
 ![developed application screenshot](./Assets/Images/webappscreenshot.PNG)
