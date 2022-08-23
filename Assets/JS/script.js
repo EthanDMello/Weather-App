@@ -3,138 +3,21 @@
 // DIRECT LOCATION http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 // FORECAST CALL https://api.openweathermap.org/data/2.5/forecast?q=Birmingham,uk&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1
 
-// function searchLocation(city) {
-//   // search api for lat and long geo data
-//   fetch(
-//     "api.openweathermap.org/geo/1.0/direct?q=" +
-//       city +
-//       "&limit=5&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
-//   )
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const lat = data[0].lat;
-//       const lon = data[0].lon;
-//       console.log("Success:", data, lat, lon);
-//       searchWeather(lat, lon);
-//     })
-//     .catch((error) => {
-//       console.error("Error:", error);
-//     });
-// }
-
-// function searchWeather(lat, lon) {
-//   // search api for weather data with lat and lon
-//   fetch(
-//     "api.openweathermap.org/data/3.0/onecall?lat={" +
-//       lat +
-//       "}&lon={" +
-//       lon +
-//       "}&exclude=minutely,alerts&appid={b0b1a57dd6c32f78f9ea0a44ec5499f1}"
-//   )
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log("Success:", data);
-//       appendWeatherData(data);
-//     })
-//     .catch((error) => {
-//       console.error("Error:", error);
-//     });
-// }
-
-function appendWeatherCurrentData(temp, wind, pressure, humidity) {
-  document.getElementById("currentTemp").textContent = temp + "°C";
-  document.getElementById("currentWind").textContent = wind + "m/s";
-  document.getElementById("currentPressure").textContent = pressure + "hPa";
-  document.getElementById("currentHumidity").textContent = humidity + "%";
-}
-function appendWeatherForecastData(temp, weather, wind, time, id) {
+function appendWeatherForecastData(temp, weather, wind, time, humidity, id) {
   let parsedTime = "";
-  if (id === 1) {
-    time = "Today";
-  } else if (id === 2) {
-    time = "Tomorrow  ";
+  if (id === 0) {
+    time = "Tomorrow";
   } else {
     parsedTime = moment.unix(time).format("ddd Do");
   }
   document.getElementById("temp" + id).textContent = temp + "°C";
   document.getElementById("wind" + id).textContent = wind + "m/s";
   document.getElementById("weather" + id).textContent = weather;
-  if (id < 3) {
+  document.getElementById("humidity" + id).textContent = humidity + "%";
+  if (id < 1) {
     document.getElementById("date" + id).textContent = time;
   } else {
     document.getElementById("date" + id).textContent = parsedTime;
-  }
-}
-
-function searchCurrentWeatherTest(location) {
-  // api.openweathermap.org/geo/1.0/direct?q=" + location + ",uk&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1
-  // "api.openweathermap.org/data/2.5/weather?q=" +
-  //     location +
-  //     "&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
-  http: fetch(
-    "https://api.openweathermap.org/data/2.5/weather?q=" +
-      location +
-      "&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      $("#currentCity").text(data.name);
-      localStorage.setItem(location, JSON.stringify(data));
-      const temp = data.main.temp;
-      const wind = data.wind.speed;
-      const pressure = data.main.pressure;
-      const humidity = data.main.humidity;
-      appendWeatherCurrentData(temp, wind, pressure, humidity);
-      forecastWeatherTest(location);
-    });
-}
-
-function forecastWeatherTest(location) {
-  // https://api.openweathermap.org/data/2.5/forecast?q=Birmingham,uk&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1
-  // "Assets/JS/dataForecast.JSON"
-  fetch(
-    "https://api.openweathermap.org/data/2.5/forecast?q=" +
-      location +
-      "&units=metric&appid=b0b1a57dd6c32f78f9ea0a44ec5499f1"
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      localStorage.setItem(location + "F", JSON.stringify(data));
-      let idCount = 1;
-      for (let i = 0; i < 40; i += 8) {
-        const temp = data.list[i].main.temp;
-        const weather = data.list[i].weather[0].main;
-        const wind = data.list[i].wind.speed;
-        const time = data.list[i].dt;
-        appendWeatherForecastData(temp, weather, wind, time, idCount);
-        idCount++;
-      }
-    });
-}
-
-function retrieveRecentSearch(data) {
-  $("#currentCity").text(data.name);
-  localStorage.setItem(location, JSON.stringify(data));
-  const temp = data.main.temp;
-  const wind = data.wind.speed;
-  const pressure = data.main.pressure;
-  const humidity = data.main.humidity;
-  appendWeatherCurrentData(temp, wind, pressure, humidity);
-}
-
-function retrieveForecastWeather(data) {
-  let idCount = 1;
-  for (let i = 0; i < 40; i += 8) {
-    const temp = data.list[i].main.temp;
-    const weather = data.list[i].weather[0].main;
-    const wind = data.list[i].wind.speed;
-    const time = data.list[i].dt;
-    appendWeatherForecastData(temp, weather, wind, time, idCount);
-    idCount++;
   }
 }
 
@@ -150,32 +33,81 @@ if (localStorage.getItem("recentSearches") === null) {
   localStorage.setItem("recentSearches", JSON.stringify(searchAr));
 } else {
   searchAr = JSON.parse(localStorage.getItem("recentSearches"));
-  Array.prototype.reverse.call(recentSearchArArea);
   searchAr.forEach((search, i) => {
     recentSearchArArea[i].textContent = search;
   });
-  searchCurrentWeatherTest("Birmingham");
+  getLonLat("Birmingham");
+}
+
+function getLonLat(location) {
+  // get lon and lat from API
+  fetch(
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+      location +
+      ",uk&APPID=b0b1a57dd6c32f78f9ea0a44ec5499f1"
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      $("#currentCity").text(data.name);
+      const lon = data.coord.lon;
+      const lat = data.coord.lat;
+      console.log(lon, lat);
+      searchOneCallWeather(lon, lat, data.name);
+    });
+}
+
+function searchOneCallWeather(lon, lat, name) {
+  fetch(
+    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&exclude=minutely,hourly,alerts&units=metric&appid=178231eb35d5ca1d0cc2ad44abbbcaa4"
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      localStorage.setItem(name, JSON.stringify(data));
+      console.log(data);
+      appendAllWeatherData(data, name);
+    });
+}
+
+function appendAllWeatherData(data, name) {
+  $("#currentCity").text(name);
+  document.getElementById("currentTemp").textContent = data.current.temp + "°C";
+  document.getElementById("currentWind").textContent =
+    data.current.wind_speed + "m/s";
+  document.getElementById("currentUv").textContent = data.current.uvi + "index";
+  document.getElementById("currentHumidity").textContent =
+    data.current.humidity + "%";
+  for (let i = 0; i < 5; i++) {
+    const temp = data.daily[i].temp.day;
+    const weather = data.daily[i].weather[0].main;
+    const wind = data.daily[i].wind_speed;
+    const humidity = data.daily[i].humidity;
+    const time = data.daily[i].dt;
+    appendWeatherForecastData(temp, weather, wind, time, humidity, i);
+  }
 }
 
 $(".searchButton").click(function () {
   userSearch = $("#searchInput").val();
   searchAr = JSON.parse(localStorage.getItem("recentSearches"));
-  searchAr.push(userSearch);
-  if (searchAr.length > 8) searchAr.shift();
+  searchAr.unshift(userSearch);
+  if (searchAr.length > 8) searchAr.pop();
   localStorage.setItem("recentSearches", JSON.stringify(searchAr));
   appendRecentSearches(searchAr);
-  searchCurrentWeatherTest(userSearch);
+  getLonLat(userSearch);
   $("#searchInput").val("");
 });
 
 $(".panel-block").click(function (event) {
   let location = event.target.textContent;
   dataAr = JSON.parse(localStorage.getItem(location));
-  dataForecastAr = JSON.parse(localStorage.getItem(location + "F"));
-  retrieveRecentSearch(dataAr);
-  retrieveForecastWeather(dataForecastAr);
+  appendAllWeatherData(dataAr, location);
   console.log("clicked", location, dataAr);
 });
-
-// searchCurrentWeatherTest();
-// forecastWeatherTest();
