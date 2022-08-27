@@ -87,7 +87,7 @@ function appendAllWeatherData(data, name) {
   document.getElementById("currentTemp").textContent = data.current.temp + "°C";
   document.getElementById("currentWind").textContent =
     data.current.wind_speed + "m/s";
-  document.getElementById("currentUv").textContent = data.current.uvi + "index";
+  document.getElementById("currentUv").textContent = data.current.uvi;
   if (data.current.uvi <= 2) {
     $("#currentUv").attr("class", "has-text-white has-background-success");
   } else if (data.current.uvi > 2 && data.current.uvi < 6) {
