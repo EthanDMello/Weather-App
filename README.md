@@ -4,7 +4,7 @@ A weather webpage that displays weather for searched locations.
 
 Made by Ethan D'Mello
 Github: https://github.com/EthanDMello
-LinkedIn: https://www.linkedin.com/in/ethan-d-mello-0351ab21b/
+LinkedIn: https://www.linkedin.com/in/ethan-dmello/
 
 Link to deployed application:
 https://ethandmello.github.io/Weather-App/
